@@ -1,0 +1,8 @@
+bin/composer
+bin/phpunit
+
+tags
+tags.lock
+tags.tmp
+
+TODO

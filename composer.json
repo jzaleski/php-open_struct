@@ -1,0 +1,12 @@
+{
+  "name": "open_struct",
+  "version": "0.0.1",
+  "authors": [{
+    "name": "Jonathan W. Zaleski",
+    "email": "JonathanZaleski@gmail.com"
+  }],
+  "repositories": [{
+    "type": "vcs",
+    "url": "https://github.com/jzaleski/php-open_struct"
+  }]
+}
