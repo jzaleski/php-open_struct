@@ -13,7 +13,7 @@ This library requires PHP 5.4+
 You can easily install `Open_Struct` with the following command:
 
 ```
-composer [global] require 'jzaleski/open_struct=*'
+composer [global] require 'jzaleski/php-open_struct=*'
 ```
 
 ## Usage
