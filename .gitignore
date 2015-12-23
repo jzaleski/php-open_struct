@@ -6,3 +6,5 @@ tags.lock
 tags.tmp
 
 TODO
+
+/vendor/

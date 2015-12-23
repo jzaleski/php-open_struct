@@ -1,6 +1,7 @@
 {
-  "name": "open_struct",
+  "name": "jzaleski/php-open_struct",
   "description": "A very flexible data-structure (inspired by Ruby's `ostruct` library)",
+  "license": "MIT",
   "version": "0.0.1",
   "authors": [{
     "name": "Jonathan W. Zaleski",

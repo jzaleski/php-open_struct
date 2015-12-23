@@ -6,7 +6,7 @@ A very flexible data-structure (inspired by Ruby's `ostruct` library)
 
 ## Requirements
 
-This library requires PHP 5+
+This library requires PHP 5.4+
 
 ## Installation
 
