@@ -11,6 +11,6 @@
     "url": "https://github.com/jzaleski/php-open_struct"
   }],
   "require": {
-    "php": ">= 5.3.0"
+    "php": ">= 5.4.0"
   }
 }
