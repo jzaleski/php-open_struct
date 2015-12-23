@@ -10,10 +10,10 @@ This library requires PHP 5+
 
 ## Installation
 
-You can easily install `open_struct` system-wide with the following command:
+You can easily install `Open_Struct` with the following command:
 
 ```
-composer global require 'jzaleski/open_struct=*'
+composer [global] require 'jzaleski/open_struct=*'
 ```
 
 ## Usage
