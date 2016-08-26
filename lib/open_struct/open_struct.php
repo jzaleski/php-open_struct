@@ -106,7 +106,7 @@ class Open_Struct implements \ArrayAccess {
    * @access public
    */
   public function offsetGet($key) {
-    return $this->offsetExists($key) ? $this->__attributes[$key] : null;
+    return $this->offsetExists($key) ? $this->value_or_result($this->__attributes[$key]) : null;
   }
 
   /**
@@ -181,5 +181,18 @@ class Open_Struct implements \ArrayAccess {
     } else {
       return $value;
     }
+  }
+
+  /**
+   * Return the value (if not `callable`) or execute (if `callable`) and return the result
+   *
+   * @param mixed $value anything
+   *
+   * @return mixed the result
+   *
+   * @access private
+   */
+  private function value_or_result($value) {
+    return is_callable($value) ? call_user_func($value) : $value;
   }
 }

@@ -37,7 +37,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
 
     $subject->foo = function() { return 1; };
 
-    $this->assertEquals(call_user_func($subject->foo), 1);
+    $this->assertEquals($subject->foo, 1);
   }
 
   /**
@@ -93,7 +93,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   public function test_reading_callback_value() {
     $subject = new Open_Struct(['foo' => function() { return 1; }]);
 
-    $this->assertEquals(call_user_func($subject->foo), 1);
+    $this->assertEquals($subject->foo, 1);
   }
 
   /**
@@ -145,7 +145,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   public function test_indexing_callback_value() {
     $subject = new Open_Struct(['foo' => function() { return 1; }]);
 
-    $this->assertEquals(call_user_func($subject['foo']), 1);
+    $this->assertEquals($subject['foo'], 1);
   }
 
   /**
@@ -198,6 +198,21 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
     $subject = new Open_Struct(['foo' => 1]);
 
     $this->assertTrue(isset($subject->foo));
+  }
+
+  /**
+   * Test a derived value
+   *
+   * @return void
+   *
+   * @access public
+   */
+  public function test_derived_value() {
+    $subject = new Open_Struct(['foo' => 2, 'bar' => 3]);
+
+    $subject->biz = function() use ($subject) { return $subject->foo * $subject->bar; };
+
+    $this->assertEquals($subject->biz, 6);
   }
 
   /**
