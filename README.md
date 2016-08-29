@@ -36,7 +36,7 @@ Dereferencing a top-level value:
 $value = $struct->foo;
 ```
 
-Getting a top-level value by key:
+Getting a top-level value by index/key:
 
 ```php
 $value = $struct['foo'];
@@ -48,7 +48,7 @@ Dereferencing a nested value:
 $nested_value = $struct->bar->biz;
 ```
 
-Getting a nested value by key:
+Getting a nested value by index/key:
 
 ```php
 $nested_value = $struct['bar']['biz'];
@@ -60,7 +60,7 @@ Setting a top-level value:
 $struct->foo = 2;
 ```
 
-Setting a top-level value by key:
+Setting a top-level value by index/key:
 
 ```php
 $struct['foo'] = 2;
@@ -72,10 +72,47 @@ Setting a nested value:
 $struct->bar->biz = 3;
 ```
 
-Setting a nested value by key:
+Setting a nested value by index/key:
 
 ```php
 $struct['bar']['biz'] = 3;
+```
+
+Unsetting a top-level value:
+
+```php
+unset($struct->foo);
+```
+
+Unsetting a top-level value by index/key:
+
+```php
+unset($struct['foo']);
+```
+
+Checking for the existence of a key:
+
+```php
+isset($struct->foo);
+```
+
+Checking for the existence of a key by index/key:
+
+```php
+isset($struct['foo']);
+```
+
+Advanced usage:
+---
+
+Setting a callback value (this is useful for scenarios where you want to derive or lazy-load a property):
+
+```php
+$dao = new Items_DAO;
+
+$struct = new Open_Struct(['items' => function() use ($dao) { return $dao->get_items(); }]);
+
+$struct->items;
 ```
 
 ## Contributing
