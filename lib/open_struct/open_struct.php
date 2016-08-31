@@ -27,7 +27,12 @@ class Open_Struct implements \ArrayAccess {
    * @access public
    */
   public function __construct($attributes = null) {
-    $this->__attributes = $this->structify($attributes ?: []);
+    $this->__attributes = [];
+    if (!empty($attributes)) {
+      foreach ($attributes as $key => $value) {
+        $this->offsetSet($key, $value);
+      }
+    }
   }
 
   /**
