@@ -98,7 +98,7 @@ class Open_Struct implements \ArrayAccess {
    * @access public
    */
   public function offsetExists($key) {
-    return isset($this->__attributes[$key]);
+    return array_key_exists($key, $this->__attributes);
   }
 
   /**
@@ -180,7 +180,7 @@ class Open_Struct implements \ArrayAccess {
     if (empty($value)) {
       return $value;
     } elseif ($this->is_associative_array($value)) {
-      return array_reduce(array_keys($value), function ($memo, $key) use ($value) { $memo[$key] = $this->structify($value[$key]); return $memo; }, new Open_Struct);
+      return array_reduce(array_keys($value), function ($memo, $key) use ($value) { $memo->offsetSet($key, $value[$key]); return $memo; }, new Open_Struct);
     } elseif ($this->is_list($value)) {
       return array_map(function ($value) { return $this->structify($value); }, $value);
     } else {

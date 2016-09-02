@@ -175,6 +175,32 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   }
 
   /**
+   * Test empty by an index
+   *
+   * @return void
+   *
+   * @access public
+   */
+  public function test_empty_by_index() {
+    $subject = new Open_Struct(['foo' => false]);
+
+    $this->assertTrue(empty($subject['foo']));
+  }
+
+  /**
+   * Test empty by a simple-key
+   *
+   * @return void
+   *
+   * @access public
+   */
+  public function test_empty_by_simple_key() {
+    $subject = new Open_Struct(['foo' => false]);
+
+    $this->assertTrue(empty($subject->foo));
+  }
+
+  /**
    * Test isset by an index
    *
    * @return void
