@@ -156,7 +156,7 @@ $struct->foo = 2;
 
 $struct->bar = 3;
 
-$struct->attributes() // return `['foo' => 2, 'bar' => 3]`
+$struct->attributes(); // return `['foo' => 2, 'bar' => 3]`
 ```
 
 ## Contributing
