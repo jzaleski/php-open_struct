@@ -9,13 +9,31 @@
 
 class Open_Struct implements \ArrayAccess {
   /**
-   * The associative array of attribute keys/values
+   * The associative array of attributes
    *
    * @var array
    *
    * @access private
    */
-  private $__attributes;
+  private $__attributes = [];
+
+  /**
+   * The associative array of changed attributes
+   *
+   * @var array
+   *
+   * @access private
+   */
+  private $__changed_attributes = [];
+
+  /**
+   * The initialization status of the instance
+   *
+   * @var bool
+   *
+   * @access private
+   */
+  private $__initialized = false;
 
   /**
    * Constructor
@@ -27,12 +45,12 @@ class Open_Struct implements \ArrayAccess {
    * @access public
    */
   public function __construct($attributes = null) {
-    $this->__attributes = [];
     if (!empty($attributes)) {
       foreach ($attributes as $key => $value) {
         $this->offsetSet($key, $value);
       }
     }
+    $this->__initialized = true;
   }
 
   /**
@@ -89,6 +107,28 @@ class Open_Struct implements \ArrayAccess {
   }
 
   /**
+   * Get the associative array of attributes
+   *
+   * @return array the associative array of attributes
+   *
+   * @access public
+   */
+  public function attributes() {
+    return array_merge($this->__attributes, $this->__changed_attributes);
+  }
+
+  /**
+   * Determine whether or not the instance is dirty
+   *
+   * @return bool result
+   *
+   * @access public
+   */
+  public function dirty() {
+    return !empty($this->__changed_attributes);
+  }
+
+  /**
    * Determine if a given attribute key exists
    *
    * @param mixed $key an attribute key
@@ -98,7 +138,7 @@ class Open_Struct implements \ArrayAccess {
    * @access public
    */
   public function offsetExists($key) {
-    return array_key_exists($key, $this->__attributes);
+    return array_key_exists($key, $this->__attributes) || array_key_exists($key, $this->__changed_attributes);
   }
 
   /**
@@ -111,7 +151,13 @@ class Open_Struct implements \ArrayAccess {
    * @access public
    */
   public function offsetGet($key) {
-    return $this->offsetExists($key) ? $this->value_or_result($this->__attributes[$key]) : null;
+    if (array_key_exists($key, $this->__changed_attributes)) {
+      return $this->value_or_result($this->__changed_attributes[$key]);
+    } elseif (array_key_exists($key, $this->__attributes)) {
+      return $this->value_or_result($this->__attributes[$key]);
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -125,7 +171,14 @@ class Open_Struct implements \ArrayAccess {
    * @access public
    */
   public function offsetSet($key, $value) {
-    $this->__attributes[$key] = $this->structify($value);
+    $value = $this->structify($value);
+    if (!$this->__initialized) {
+      $this->__attributes[$key] = $value;
+    } elseif (!array_key_exists($key, $this->__attributes) || $this->__attributes[$key] !== $value) {
+      $this->__changed_attributes[$key] = $value;
+    } elseif (array_key_exists($key, $this->__attributes)) {
+      unset($this->__changed_attributes[$key]);
+    }
   }
 
   /**
@@ -139,6 +192,7 @@ class Open_Struct implements \ArrayAccess {
    */
   public function offsetUnset($key) {
     unset($this->__attributes[$key]);
+    unset($this->__changed_attributes[$key]);
   }
 
   /**

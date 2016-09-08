@@ -115,6 +115,50 @@ $struct = new Open_Struct(['items' => function() use ($dao) { return $dao->get_i
 $struct->items;
 ```
 
+The `dirty` method will return `false` until initialization (the constructor) is complete
+
+```php
+$struct = new Open_Struct(['foo' => 1]);
+
+$struct->dirty(); // returns `false`
+```
+
+The `dirty` method will return `true`, after initialization (the constructor), when a value is set
+
+```php
+$struct = new Open_Struct;
+
+$struct->foo = 1;
+
+$struct->dirty(); // returns `true`
+```
+
+The `dirty` method will return `false`, after initialization (the constructor), when a value is set back to the original value
+
+```php
+$struct = new Open_Struct(['foo' => 1]);
+
+$struct->foo = 2;
+
+$struct->dirty(); // returns `true`
+
+$struct->foo = 1;
+
+$struct->dirty(); // returns `false`
+```
+
+Getting the the list of attributes:
+
+```php
+$struct = new Open_Struct(['foo' => 1]);
+
+$struct->foo = 2;
+
+$struct->bar = 3;
+
+$struct->attributes() // return `['foo' => 2, 'bar' => 3]`
+```
+
 ## Contributing
 
 1. Fork it ( http://github.com/jzaleski/php-open_struct/fork )
