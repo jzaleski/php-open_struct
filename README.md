@@ -102,17 +102,14 @@ Checking for the existence of a key by index/key:
 isset($struct['foo']);
 ```
 
-Advanced usage:
----
-
 Setting a callback value (this is useful for scenarios where you want to derive or lazy-load a property):
 
 ```php
-$dao = new Items_DAO;
+$dao = new Data_Access_Object;
 
-$struct = new Open_Struct(['items' => function() use ($dao) { return $dao->get_items(); }]);
+$struct = new Open_Struct(['something' => function() use ($dao) { return $dao->get_something(); }]);
 
-$struct->items;
+$struct->something;
 ```
 
 The `dirty` method will return `false` until initialization (the constructor) is complete
@@ -120,7 +117,7 @@ The `dirty` method will return `false` until initialization (the constructor) is
 ```php
 $struct = new Open_Struct(['foo' => 1]);
 
-$struct->dirty(); // returns `false`
+$struct->dirty(); // returns: `false`
 ```
 
 The `dirty` method will return `true`, after initialization (the constructor), when a value is set
@@ -130,24 +127,24 @@ $struct = new Open_Struct;
 
 $struct->foo = 1;
 
-$struct->dirty(); // returns `true`
+$struct->dirty(); // returns: `true`
 ```
 
-The `dirty` method will return `false`, after initialization (the constructor), when a value is set back to the original value
+The `dirty` method will return `false`, after initialization (the constructor), when a value is set back to its original state
 
 ```php
 $struct = new Open_Struct(['foo' => 1]);
 
 $struct->foo = 2;
 
-$struct->dirty(); // returns `true`
+$struct->dirty(); // returns: `true`
 
 $struct->foo = 1;
 
-$struct->dirty(); // returns `false`
+$struct->dirty(); // returns: `false`
 ```
 
-Getting the the list of attributes:
+Getting the array of attributes:
 
 ```php
 $struct = new Open_Struct(['foo' => 1]);
@@ -156,7 +153,30 @@ $struct->foo = 2;
 
 $struct->bar = 3;
 
-$struct->attributes(); // return `['foo' => 2, 'bar' => 3]`
+$struct->attributes(); // returns: `['foo' => 2, 'bar' => 3]`
+```
+
+Getting the array of changed attributes:
+
+```php
+$struct = new Open_Struct['foo' => 1]);
+
+$struct->bar = 2;
+
+$struct->changed_attributes(); // returns: `['bar' => 2]`
+
+The `changed_attributes` method will return an empty array. after initializaiton (the constructor), when a value is set back to its original state
+
+```php
+$struct = new Open_Struct(['foo' => 1]);
+
+$struct->foo = 2;
+
+$struct->changed_attributes(); // returns: `['foo' => 2]`
+
+$struct->foo = 1;
+
+$struct->changed_attributes; // returns: `[]`
 ```
 
 ## Contributing

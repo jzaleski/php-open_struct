@@ -118,6 +118,17 @@ class Open_Struct implements \ArrayAccess {
   }
 
   /**
+   * Get the associative array of changed attributes
+   *
+   * @return array the associative array of changed attributes
+   *
+   * @access public
+   */
+  public function changed_attributes() {
+    return array_merge([], $this->__changed_attributes);
+  }
+
+  /**
    * Determine whether or not the instance is dirty
    *
    * @return bool result

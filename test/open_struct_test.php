@@ -22,7 +22,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
 
     $subject->foo = 1;
 
-    $this->assertEquals($subject->foo, 1);
+    $this->assertEquals(1, $subject->foo);
   }
 
   /**
@@ -37,7 +37,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
 
     $subject->foo = function() { return 1; };
 
-    $this->assertEquals($subject->foo, 1);
+    $this->assertEquals(1, $subject->foo);
   }
 
   /**
@@ -52,7 +52,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
 
     $subject->foo = ['bar' => 1];
 
-    $this->assertEquals($subject->foo->bar, 1);
+    $this->assertEquals(1, $subject->foo->bar);
   }
 
   /**
@@ -67,7 +67,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
 
     $subject->foo = [1];
 
-    $this->assertEquals($subject->foo, [1]);
+    $this->assertEquals([1], $subject->foo);
   }
 
   /**
@@ -80,7 +80,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   public function test_reading_a_simple_value() {
     $subject = new Open_Struct(['foo' => 1]);
 
-    $this->assertEquals($subject->foo, 1);
+    $this->assertEquals(1, $subject->foo);
   }
 
   /**
@@ -93,7 +93,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   public function test_a_reading_callback_value() {
     $subject = new Open_Struct(['foo' => function() { return 1; }]);
 
-    $this->assertEquals($subject->foo, 1);
+    $this->assertEquals(1, $subject->foo);
   }
 
   /**
@@ -106,7 +106,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   public function test_reading_a_dictionary_value() {
     $subject = new Open_Struct(['foo' => ['bar' => 1]]);
 
-    $this->assertEquals($subject->foo->bar, 1);
+    $this->assertEquals(1, $subject->foo->bar);
   }
 
   /**
@@ -119,7 +119,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   public function test_reading_a_list_value() {
     $subject = new Open_Struct(['foo' => [1]]);
 
-    $this->assertEquals($subject->foo, [1]);
+    $this->assertEquals([1], $subject->foo);
   }
 
   /**
@@ -132,7 +132,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   public function test_indexing_a_simple_value() {
     $subject = new Open_Struct(['foo' => 1]);
 
-    $this->assertEquals($subject['foo'], 1);
+    $this->assertEquals(1, $subject['foo']);
   }
 
   /**
@@ -145,7 +145,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   public function test_indexing_a_callback_value() {
     $subject = new Open_Struct(['foo' => function() { return 1; }]);
 
-    $this->assertEquals($subject['foo'], 1);
+    $this->assertEquals(1, $subject['foo']);
   }
 
   /**
@@ -158,7 +158,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   public function test_indexing_a_dictionary_value() {
     $subject = new Open_Struct(['foo' => ['bar' => 1]]);
 
-    $this->assertEquals($subject['foo']['bar'], 1);
+    $this->assertEquals(1, $subject['foo']['bar']);
   }
 
   /**
@@ -171,7 +171,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   public function test_indexing_a_list_value() {
     $subject = new Open_Struct(['foo' => [1]]);
 
-    $this->assertEquals($subject['foo'], [1]);
+    $this->assertEquals([1], $subject['foo']);
   }
 
   /**
@@ -208,7 +208,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
    * @access public
    */
   public function test_isset_by_an_index() {
-    $subject = new Open_Struct(['foo' => 1]);
+    $subject = new Open_Struct(['foo' => false]);
 
     $this->assertTrue(isset($subject['foo']));
   }
@@ -221,7 +221,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
    * @access public
    */
   public function test_isset_by_a_simple_key() {
-    $subject = new Open_Struct(['foo' => 1]);
+    $subject = new Open_Struct(['foo' => false]);
 
     $this->assertTrue(isset($subject->foo));
   }
@@ -238,7 +238,7 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
 
     $subject->biz = function() use ($subject) { return $subject->foo * $subject->bar; };
 
-    $this->assertEquals($subject->biz, 6);
+    $this->assertEquals(6, $subject->biz);
   }
 
   /**
@@ -302,6 +302,29 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   }
 
   /**
+   * Test is clean (not dirty) until initialization (the constructor) is complete
+   *
+   * @return void
+   *
+   * @access public
+   */
+  public function test_is_clean_until_initialization_is_complete() {
+    $subject = new Open_Struct(['foo' => 'foo']);
+
+    $this->assertFalse($subject->dirty());
+  }
+
+  public function test_attributes_represents_the_current_state_of_the_instance() {
+    $subject = new Open_Struct(['foo' => 'foo']);
+
+    $subject->foo = 'bar';
+
+    $subject->bar = 'biz';
+
+    $this->assertEquals(['foo' => 'bar', 'bar' => 'biz'], $subject->attributes());
+  }
+
+  /**
    * Test assigning the original value to a key by index removes the dirty status
    *
    * @return void
@@ -340,19 +363,6 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
   }
 
   /**
-   * Test is clean (not dirty) until initialization (the constructor) is complete
-   *
-   * @return void
-   *
-   * @access public
-   */
-  public function test_is_clean_until_initialization_is_complete() {
-    $subject = new Open_Struct(['foo' => 'foo']);
-
-    $this->assertFalse($subject->dirty());
-  }
-
-  /**
    * Test is marked dirty when a value is assigned to a key after initialization (the constructor) is complete
    *
    * @return void
@@ -380,5 +390,73 @@ class Open_Struct_Test extends \PHPUnit_Framework_TestCase {
     $subject['foo'] = 'foo';
 
     $this->assertTrue($subject->dirty());
+  }
+
+  /**
+   * Test assigning the original value to a key by index removes the item from changed attributes
+   *
+   * @return void
+   *
+   * @access public
+   */
+  public function test_assigning_the_original_value_to_a_key_by_index_removes_the_item_from_changed_attributes() {
+    $subject = new Open_Struct(['foo' => 1]);
+
+    $subject['foo'] = 2;
+
+    $this->assertEquals(['foo' => 2], $subject->changed_attributes());
+
+    $subject['foo'] = 1;
+
+    $this->assertEmpty($subject->changed_attributes());
+  }
+
+  /**
+   * Test assigning the original value to a key removes the item from changed attributes
+   *
+   * @return void
+   *
+   * @access public
+   */
+  public function test_assigning_the_original_value_to_a_key_removes_the_item_from_changed_attributes() {
+    $subject = new Open_Struct(['foo' => 1]);
+
+    $subject->foo = 2;
+
+    $this->assertEquals(['foo' => 2], $subject->changed_attributes());
+
+    $subject->foo = 1;
+
+    $this->assertEmpty($subject->changed_attributes());
+  }
+
+  /**
+   * Test changed attributes is updated when a value is assigned to a key after initialization (the constructor) is complete
+   *
+   * @return void
+   *
+   * @access public
+   */
+  public function test_changed_attributes_is_updated_when_a_value_is_assigned_to_a_key_after_initialization_is_complete() {
+    $subject = new Open_Struct;
+
+    $subject->foo = 1;
+
+    $this->assertEquals(['foo' => 1], $subject->changed_attributes());
+  }
+
+  /**
+   * Test changed attributes is updated when a value is assigned to a key by index after initialization (the constructor) is complete
+   *
+   * @return void
+   *
+   * @access public
+   */
+  public function test_changed_attributes_is_updated_when_a_value_is_assigned_to_a_key_by_index_after_initialization_is_complete() {
+    $subject = new Open_Struct;
+
+    $subject['foo'] = 1;
+
+    $this->assertEquals(['foo' => 1], $subject->changed_attributes());
   }
 }
