@@ -112,7 +112,7 @@ $struct = new Open_Struct(['something' => function() use ($dao) { return $dao->g
 $struct->something;
 ```
 
-The `dirty` method will return `false` until initialization (the constructor) is complete
+The `dirty` method will return `false` until initialization (the constructor) is complete:
 
 ```php
 $struct = new Open_Struct(['foo' => 1]);
@@ -120,7 +120,7 @@ $struct = new Open_Struct(['foo' => 1]);
 $struct->dirty(); // returns: `false`
 ```
 
-The `dirty` method will return `true`, after initialization (the constructor), when a value is set
+The `dirty` method will return `true`, after initialization (the constructor), when a value is set:
 
 ```php
 $struct = new Open_Struct;
@@ -130,7 +130,7 @@ $struct->foo = 1;
 $struct->dirty(); // returns: `true`
 ```
 
-The `dirty` method will return `false`, after initialization (the constructor), when a value is set back to its original state
+The `dirty` method will return `false`, after initialization (the constructor), when a value is set back to its original state:
 
 ```php
 $struct = new Open_Struct(['foo' => 1]);
@@ -166,7 +166,7 @@ $struct->bar = 2;
 $struct->changed_attributes(); // returns: `['bar' => 2]`
 ```
 
-The `changed_attributes` method will return an empty array. after initializaiton (the constructor), when a value is set back to its original state
+The `changed_attributes` method will return an empty array. after initializaiton (the constructor), when a value is set back to its original state:
 
 ```php
 $struct = new Open_Struct(['foo' => 1]);
