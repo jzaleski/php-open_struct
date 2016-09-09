@@ -164,6 +164,7 @@ $struct = new Open_Struct['foo' => 1]);
 $struct->bar = 2;
 
 $struct->changed_attributes(); // returns: `['bar' => 2]`
+```
 
 The `changed_attributes` method will return an empty array. after initializaiton (the constructor), when a value is set back to its original state
 
