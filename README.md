@@ -159,7 +159,7 @@ $struct->attributes(); // returns: `['foo' => 2, 'bar' => 3]`
 Getting the array of changed attributes:
 
 ```php
-$struct = new Open_Struct['foo' => 1]);
+$struct = new Open_Struct(['foo' => 1]);
 
 $struct->bar = 2;
 
@@ -177,7 +177,7 @@ $struct->changed_attributes(); // returns: `['foo' => 2]`
 
 $struct->foo = 1;
 
-$struct->changed_attributes; // returns: `[]`
+$struct->changed_attributes(); // returns: `[]`
 ```
 
 ## Contributing
